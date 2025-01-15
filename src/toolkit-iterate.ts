@@ -27,8 +27,8 @@ program
   .requiredOption('--outputJs <path>', 'path to javascript output file')
   .option('--openAIApiKey <key>')
   .option('--serpApiKey <key>')
-  .option('--modelName <name>', 'name of the OpenAI model to use', 'gpt-4')
-  .option('-v, --verbose', undefined, false);
+  .option('--modelName <name>', 'name of the OpenAI model to use')
+  .option('-v, --verbose', undefined);
 program.parse();
 const options = program.opts<Options>();
 
@@ -42,6 +42,8 @@ if (!openAIApiKey) {
 const openAIBaseURL = options.openAIBaseURL || process.env['OPENAI_BASE_URL'];
 
 const modelName = options.modelName || process.env['MODEL_NAME'] || 'gpt-4';
+
+const verbose = options.verbose || process.env['VERBOSE'] === 'true' || false;
 
 const serpApiKey = options.serpApiKey || process.env['SERP_API_KEY'];
 if (!serpApiKey) {
@@ -58,7 +60,7 @@ const iterator = new ToolIterator({
   openAIApiKey,
   serpApiKey,
   modelName,
-  verbose: options.verbose,
+  verbose,
 });
 
 (async () => {

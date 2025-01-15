@@ -10,7 +10,7 @@ type ToolIteratorInput = {
   openAIApiKey: string;
   serpApiKey: string;
   modelName: string;
-  verbose?: boolean;
+  verbose: boolean;
   maxIterations?: number;
 };
 
@@ -30,7 +30,7 @@ class ToolIterator {
     openAIApiKey,
     serpApiKey,
     modelName,
-    verbose = false,
+    verbose,
     maxIterations = 5,
   }: ToolIteratorInput) {
     this.openAIApikey = openAIApiKey;
