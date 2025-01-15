@@ -6,9 +6,10 @@ import type { GenerateToolInput } from 'chains/BaseToolGenerationChain';
 import type { Tool } from 'lib/types';
 
 type ToolIteratorInput = {
+  openAIBaseURL?: string|undefined;
   openAIApiKey: string;
   serpApiKey: string;
-  modelName?: string;
+  modelName: string;
   verbose?: boolean;
   maxIterations?: number;
 };
@@ -18,18 +19,24 @@ class ToolIterator {
 
   private openAIApikey: string;
 
+  private openAIBaseURL?: string|undefined;
+
   private verbose: boolean;
 
   private maxIterations: number;
 
   constructor({
+    openAIBaseURL,
     openAIApiKey,
     serpApiKey,
-    modelName = 'gpt-4',
+    modelName,
     verbose = false,
     maxIterations = 5,
   }: ToolIteratorInput) {
     this.openAIApikey = openAIApiKey;
+    if(this.openAIBaseURL){
+      this.openAIBaseURL = openAIBaseURL;
+    }
     this.verbose = verbose;
     this.maxIterations = maxIterations;
     this.toolkit = new Toolkit({
