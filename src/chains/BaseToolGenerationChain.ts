@@ -7,6 +7,7 @@ import type { ChainValues } from 'langchain/schema';
 import type { JsonObject } from 'lib/types';
 
 export type BaseToolGenerationChainInput = {
+  openAIBaseURL?: string|undefined
   openAIApiKey: string;
   modelName: string;
   logToConsole: boolean;
@@ -26,12 +27,17 @@ abstract class BaseToolGenerationChain<T> {
 
   private logToConsole: boolean;
 
+  private openAIBaseURL?: string
+
   protected chain!: BaseChain;
 
   constructor(input: BaseToolGenerationChainInput) {
     this.openAIApiKey = input.openAIApiKey;
     this.logToConsole = input.logToConsole;
     this.modelName = input.modelName;
+    if(input.openAIBaseURL){
+      this.openAIBaseURL = input.openAIBaseURL
+    }
   }
 
   async generate(input: T) {
@@ -70,7 +76,9 @@ abstract class BaseToolGenerationChain<T> {
       modelName: this.modelName,
       temperature: 0,
       openAIApiKey: this.openAIApiKey,
-    });
+    },this.openAIBaseURL?{
+      basePath: this.openAIBaseURL
+    }:undefined);
     const prompt = this.getPromptTemplate();
     return new LLMChain({ llm, prompt });
   }

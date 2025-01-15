@@ -2,6 +2,7 @@ import type { GenerateToolInput } from 'chains/BaseToolGenerationChain';
 import { IterateToolInput } from 'chains/IterativeToolGenerationChain';
 import type { Tool } from 'lib/types';
 export type ToolkitInput = {
+    openAIBaseURL?: string;
     openAIApiKey?: string;
     serpApiKey?: string;
     modelName?: string;

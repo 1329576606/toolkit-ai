@@ -3,6 +3,7 @@ import type { PromptTemplate } from 'langchain/prompts';
 import type { ChainValues } from 'langchain/schema';
 import type { JsonObject } from 'lib/types';
 export type BaseToolGenerationChainInput = {
+    openAIBaseURL?: string | undefined;
     openAIApiKey: string;
     modelName: string;
     logToConsole: boolean;
@@ -17,6 +18,7 @@ declare abstract class BaseToolGenerationChain<T> {
     private openAIApiKey;
     private modelName;
     private logToConsole;
+    private openAIBaseURL?;
     protected chain: BaseChain;
     constructor(input: BaseToolGenerationChainInput);
     generate(input: T): Promise<any>;

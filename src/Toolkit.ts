@@ -11,6 +11,7 @@ import { GeneratedToolSchema } from 'lib/schemas';
 import type { GeneratedTool, BaseTool, Tool } from 'lib/types';
 
 export type ToolkitInput = {
+  openAIBaseURL?: string
   openAIApiKey?: string;
   serpApiKey?: string;
   modelName?: string;
@@ -38,8 +39,9 @@ class Toolkit {
       throw new Error('Serp API key not defined in params or environment');
     }
 
-    const modelName = input?.modelName || 'gpt-4';
-    const logToConsole = input?.logToConsole || false;
+    const modelName = input?.modelName || process.env['MODEL_NAME'] || 'gpt-4';
+    const logToConsole = input?.logToConsole || process.env['LOG_TO_CONSOLE'] === "true" || false;
+    const openAIBaseURL = input?.openAIBaseURL || process.env['OPENAI_BASE_URL'] || undefined;
 
     this.simpleToolGenerationChain = new SimpleToolGenerationChain({
       openAIApiKey,
@@ -51,12 +53,14 @@ class Toolkit {
       serpApiKey,
       modelName,
       logToConsole,
+      openAIBaseURL
     });
     this.iterativeToolGenerationChain = new IterativeToolGenerationChain({
       openAIApiKey,
       serpApiKey,
       modelName,
       logToConsole,
+      openAIBaseURL
     });
   }
 

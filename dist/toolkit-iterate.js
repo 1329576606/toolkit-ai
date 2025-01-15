@@ -83,11 +83,15 @@ class BaseToolGenerationChain {
     openAIApiKey;
     modelName;
     logToConsole;
+    openAIBaseURL;
     chain;
     constructor(input) {
         this.openAIApiKey = input.openAIApiKey;
         this.logToConsole = input.logToConsole;
         this.modelName = input.modelName;
+        if (input.openAIBaseURL) {
+            this.openAIBaseURL = input.openAIBaseURL;
+        }
     }
     async generate(input) {
         const outputKey = this.getOutputKey();
@@ -113,7 +117,9 @@ class BaseToolGenerationChain {
             modelName: this.modelName,
             temperature: 0,
             openAIApiKey: this.openAIApiKey,
-        });
+        }, this.openAIBaseURL ? {
+            basePath: this.openAIBaseURL
+        } : undefined);
         const prompt = this.getPromptTemplate();
         return new LLMChain({ llm, prompt });
     }
@@ -330,8 +336,9 @@ class Toolkit {
         if (!serpApiKey) {
             throw new Error('Serp API key not defined in params or environment');
         }
-        const modelName = input?.modelName || 'gpt-4';
-        const logToConsole = input?.logToConsole || false;
+        const modelName = input?.modelName || process.env['MODEL_NAME'] || 'gpt-4';
+        const logToConsole = input?.logToConsole || process.env['LOG_TO_CONSOLE'] === "true" || false;
+        const openAIBaseURL = input?.openAIBaseURL || process.env['OPENAI_BASE_URL'] || undefined;
         this.simpleToolGenerationChain = new SimpleToolGenerationChain({
             openAIApiKey,
             modelName,
@@ -342,12 +349,14 @@ class Toolkit {
             serpApiKey,
             modelName,
             logToConsole,
+            openAIBaseURL
         });
         this.iterativeToolGenerationChain = new IterativeToolGenerationChain({
             openAIApiKey,
             serpApiKey,
             modelName,
             logToConsole,
+            openAIBaseURL
         });
     }
     // Primary public method used to generate a tool,
