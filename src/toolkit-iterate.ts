@@ -43,6 +43,8 @@ const openAIBaseURL = options.openAIBaseURL || process.env['OPENAI_BASE_URL'];
 
 const modelName = options.modelName || process.env['MODEL_NAME'] || 'gpt-4';
 
+const verbose = options.verbose || process.env['VERBOSE'] === 'true' || false;
+
 const serpApiKey = options.serpApiKey || process.env['SERP_API_KEY'];
 if (!serpApiKey) {
   throw new Error(
@@ -58,7 +60,7 @@ const iterator = new ToolIterator({
   openAIApiKey,
   serpApiKey,
   modelName,
-  verbose: options.verbose,
+  verbose,
 });
 
 (async () => {

@@ -40,7 +40,7 @@ class Toolkit {
     }
 
     const modelName = input?.modelName || process.env['MODEL_NAME'] || 'gpt-4';
-    const logToConsole = input?.logToConsole || process.env['LOG_TO_CONSOLE'] === "true" || false;
+    const logToConsole = input?.logToConsole || process.env['VERBOSE'] === "true" || false;
     const openAIBaseURL = input?.openAIBaseURL || process.env['OPENAI_BASE_URL'] || undefined;
 
     this.simpleToolGenerationChain = new SimpleToolGenerationChain({

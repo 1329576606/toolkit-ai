@@ -332,7 +332,7 @@ class Toolkit {
             throw new Error('Serp API key not defined in params or environment');
         }
         const modelName = input?.modelName || process.env['MODEL_NAME'] || 'gpt-4';
-        const logToConsole = input?.logToConsole || process.env['LOG_TO_CONSOLE'] === "true" || false;
+        const logToConsole = input?.logToConsole || process.env['VERBOSE'] === "true" || false;
         const openAIBaseURL = input?.openAIBaseURL || process.env['OPENAI_BASE_URL'] || undefined;
         this.simpleToolGenerationChain = new SimpleToolGenerationChain({
             openAIApiKey,

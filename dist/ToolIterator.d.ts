@@ -5,7 +5,7 @@ type ToolIteratorInput = {
     openAIApiKey: string;
     serpApiKey: string;
     modelName: string;
-    verbose?: boolean;
+    verbose: boolean;
     maxIterations?: number;
 };
 declare class ToolIterator {
