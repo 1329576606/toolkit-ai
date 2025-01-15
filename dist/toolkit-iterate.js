@@ -399,10 +399,14 @@ class Toolkit {
 class ToolIterator {
     toolkit;
     openAIApikey;
+    openAIBaseURL;
     verbose;
     maxIterations;
-    constructor({ openAIApiKey, serpApiKey, modelName = 'gpt-4', verbose = false, maxIterations = 5, }) {
+    constructor({ openAIBaseURL, openAIApiKey, serpApiKey, modelName, verbose = false, maxIterations = 5, }) {
         this.openAIApikey = openAIApiKey;
+        if (this.openAIBaseURL) {
+            this.openAIBaseURL = openAIBaseURL;
+        }
         this.verbose = verbose;
         this.maxIterations = maxIterations;
         this.toolkit = new Toolkit({
@@ -493,6 +497,8 @@ const openAIApiKey = options.openAIApiKey || process.env['OPENAI_API_KEY'];
 if (!openAIApiKey) {
     throw new Error('OpenAI API key must be provided in --openAIApiKey argument or OPENAI_API_KEY environment variable');
 }
+const openAIBaseURL = options.openAIBaseURL || process.env['OPENAI_BASE_URL'];
+const modelName = options.modelName || process.env['MODEL_NAME'] || 'gpt-4';
 const serpApiKey = options.serpApiKey || process.env['SERP_API_KEY'];
 if (!serpApiKey) {
     throw new Error('Serp API key must be provided in --serpApiKey argument or SERP_API_KEY environment variable');
@@ -501,9 +507,10 @@ const inputText = readFileSync(options.inputJson).toString();
 const inputJson = JSON.parse(inputText);
 const input = IterateInputSchema.parse(inputJson);
 const iterator = new ToolIterator({
+    openAIBaseURL,
     openAIApiKey,
     serpApiKey,
-    modelName: options.modelName,
+    modelName,
     verbose: options.verbose,
 });
 (async () => {

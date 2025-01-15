@@ -12,6 +12,7 @@ config();
 interface Options {
   inputJson: string;
   outputJs: string;
+  openAIBaseURL?: string
   openAIApiKey?: string | undefined;
   serpApiKey?: string | undefined;
   modelName: string;
@@ -38,6 +39,10 @@ if (!openAIApiKey) {
   );
 }
 
+const openAIBaseURL = options.openAIBaseURL || process.env['OPENAI_BASE_URL'];
+
+const modelName = options.modelName || process.env['MODEL_NAME'] || 'gpt-4';
+
 const serpApiKey = options.serpApiKey || process.env['SERP_API_KEY'];
 if (!serpApiKey) {
   throw new Error(
@@ -49,9 +54,10 @@ const inputText = readFileSync(options.inputJson).toString();
 const inputJson = JSON.parse(inputText);
 const input = IterateInputSchema.parse(inputJson);
 const iterator = new ToolIterator({
+  openAIBaseURL,
   openAIApiKey,
   serpApiKey,
-  modelName: options.modelName,
+  modelName,
   verbose: options.verbose,
 });
 

@@ -1,18 +1,20 @@
 import type { GenerateToolInput } from 'chains/BaseToolGenerationChain';
 import type { Tool } from 'lib/types';
 type ToolIteratorInput = {
+    openAIBaseURL?: string | undefined;
     openAIApiKey: string;
     serpApiKey: string;
-    modelName?: string;
+    modelName: string;
     verbose?: boolean;
     maxIterations?: number;
 };
 declare class ToolIterator {
     private toolkit;
     private openAIApikey;
+    private openAIBaseURL?;
     private verbose;
     private maxIterations;
-    constructor({ openAIApiKey, serpApiKey, modelName, verbose, maxIterations, }: ToolIteratorInput);
+    constructor({ openAIBaseURL, openAIApiKey, serpApiKey, modelName, verbose, maxIterations, }: ToolIteratorInput);
     iterate(input: GenerateToolInput): Promise<Tool>;
     private log;
     private generateInitialTool;
