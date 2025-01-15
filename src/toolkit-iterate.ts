@@ -27,8 +27,8 @@ program
   .requiredOption('--outputJs <path>', 'path to javascript output file')
   .option('--openAIApiKey <key>')
   .option('--serpApiKey <key>')
-  .option('--modelName <name>', 'name of the OpenAI model to use', 'gpt-4')
-  .option('-v, --verbose', undefined, false);
+  .option('--modelName <name>', 'name of the OpenAI model to use')
+  .option('-v, --verbose', undefined);
 program.parse();
 const options = program.opts<Options>();
 
